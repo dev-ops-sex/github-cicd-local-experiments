@@ -1,0 +1,33 @@
+name: Prod build-deploy
+
+on: [workflow_dispatch]
+
+jobs:
+  production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    permissions:
+      contents: read
+      packages: write
+      #deployments: write
+    steps:
+      - name: Login to GitHub Container Registry
+        id: docker-login
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install werf
+        id: install-werf
+        uses: werf/actions/install@v1.2
+        with:
+          channel: stable
+          version: v1.2.227
+
+      - uses: actions/checkout@v3
+        id: checkout
+        with:
+          fetch-depth: 0
