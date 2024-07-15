@@ -31,3 +31,10 @@ jobs:
         id: checkout
         with:
           fetch-depth: 0
+
+      - uses: thaind0/envfile@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+          file:
+
+      - run: echo MY_PROD_SECRET=$MY_PROD_SECRET
