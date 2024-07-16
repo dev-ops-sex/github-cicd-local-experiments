@@ -1,4 +1,5 @@
 giterminismConfigVersion: 1
 config:
-  allowUncommittedTemplates:
-    - env.secrets
+  goTemplateRendering:
+    allowUncommittedFiles:
+      - env.secrets
