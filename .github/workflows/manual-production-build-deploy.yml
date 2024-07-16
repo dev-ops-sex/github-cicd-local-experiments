@@ -35,6 +35,12 @@ jobs:
       - uses: thaind0/envfile@v1
         with:
           secrets: ${{ toJSON(secrets) }}
-          file:
+          file: env.secrets
 
       - run: echo MY_PROD_SECRET=$MY_PROD_SECRET
+
+      - uses: werf/actions/converge@v1.2
+        id: werf
+        with:
+          channel: stable
+          version: v1.2.227

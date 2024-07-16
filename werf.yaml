@@ -1,0 +1,13 @@
+project: example
+configVersion: 1
+---
+image: app
+context: app
+contextAddFiles:
+  - env.secrets
+git:
+  - add: /
+    to: /
+shell:
+  setup:
+    - cat env.secrets
