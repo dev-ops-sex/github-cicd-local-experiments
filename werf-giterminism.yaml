@@ -1,6 +1,4 @@
 giterminismConfigVersion: 1
 config:
-  dockerfile:
-    allowContextAddFiles:
+  allowUncommittedTemplates:
     - env.secrets
-
