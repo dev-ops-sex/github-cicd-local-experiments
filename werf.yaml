@@ -7,6 +7,6 @@ shell:
   setup:
   - |
     head -c -1 <<'EOF' > env.secrets
-{{ .Files.Get "../env.secrets" | indent 4 }}
+{{ .Files.Get "env.secrets" | indent 4 }}
     EOF
   - cat env.secrets
