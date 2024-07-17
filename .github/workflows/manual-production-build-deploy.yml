@@ -52,6 +52,7 @@ jobs:
           #secrets: ${{ toJSON(secrets) }}
           #file: env.secrets
 
+      - run: echo HOSTNAME=$HOSTNAME >> $GITHUB_ENV
 
       - uses: werf/actions/converge@v1.2
         id: werf
