@@ -11,7 +11,21 @@ jobs:
       contents: read
       packages: write
       #deployments: write
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
+      - run: env
+      - run: set
+      - run: ip a
+      - run: hostname
+      - run: docker ps -a
+      - run: docker network ls
       - name: Login to GitHub Container Registry
         id: docker-login
         uses: docker/login-action@v2
