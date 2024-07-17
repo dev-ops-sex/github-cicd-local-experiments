@@ -5,4 +5,4 @@ image: app
 from: alpine
 shell:
   setup:
-  - echo QUIT | nc {{ env "HOSTNAME" }} 6379
+  - echo QUIT | nc {{ env "HOSTNAME" }} 6379 > file
