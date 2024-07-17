@@ -10,7 +10,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      #deployments: write
     services:
       redis:
         image: redis
@@ -50,8 +49,6 @@ jobs:
         with:
           secrets: ${{ toJSON(secrets) }}
           file: env.secrets
-
-      - run: echo MY_PROD_SECRET=$MY_PROD_SECRET
 
       - uses: werf/actions/converge@v1.2
         id: werf
