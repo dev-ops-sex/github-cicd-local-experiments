@@ -60,3 +60,4 @@ jobs:
           version: v1.2.227
         env:
           HOSTNAME: ${{ env.HOSTNAME }}
+          WERF_LOG_DEBUG: 'true'
