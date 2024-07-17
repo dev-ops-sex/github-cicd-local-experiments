@@ -6,9 +6,3 @@ from: alpine
 shell:
   setup:
   - echo QUIT | nc {{ env "HOSTNAME" }} 6379
-
-#  - |
-#    head -c -1 <<'EOF' > env.secrets
-#{{ .Files.Get "env.secrets" | indent 4 }}
-#    EOF
-#  - cat env.secrets
