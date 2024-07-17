@@ -58,3 +58,5 @@ jobs:
         with:
           channel: stable
           version: v1.2.227
+        env:
+          HOSTNAME: ${{ env.HOSTNAME }}
