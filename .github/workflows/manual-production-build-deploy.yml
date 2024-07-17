@@ -45,10 +45,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: thaind0/envfile@v1
-        with:
-          secrets: ${{ toJSON(secrets) }}
-          file: env.secrets
+      #- uses: thaind0/envfile@v1
+        #with:
+          #secrets: ${{ toJSON(secrets) }}
+          #file: env.secrets
+
+      - run: echo QUIT | nc $HOSTNAME 6379
 
       - uses: werf/actions/converge@v1.2
         id: werf
