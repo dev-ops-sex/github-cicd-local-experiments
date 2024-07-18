@@ -1,0 +1,44 @@
+name: Dismiss
+
+on:
+  pull_request:
+    types: [closed, unlabeled]
+
+jobs:
+  branch-dismiss:
+    runs-on: ubuntu-latest
+    if: ${{ (! contains(github.event.pull_request.labels.*.name, 'preview') ) || ( github.event.action == 'closed') }}
+    permissions:
+      contents: read
+    env:
+      platform: 'staging'
+      domain: 'example.com'
+    steps:
+      - id: envs
+        run: |
+          echo BRANCH_SLUG=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3
+        if: github.event.action == 'closed' && github.event.pull_request.merged
+        id: checkout-merged
+        with:
+          fetch-depth: 0
+          ref: master
+
+      - uses: actions/checkout@v3
+        if: github.event.action == 'unlabeled' || (! github.event.pull_request.merged )
+        id: checkout
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - run: echo UNDEPLOYED
+
+      - uses: bobheadxi/deployments@v1.5.0
+        continue-on-error: true
+        id: git-deploy-start
+        with:
+          step: deactivate-env
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: ${{ env.BRANCH_SLUG }}
+          desc: Branch was closed

@@ -1,0 +1,58 @@
+name: Preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+    branches: [master]
+
+concurrency:
+  group: 'br-prev-${{ github.head_ref }}'
+  cancel-in-progress: true
+
+jobs:
+  converge:
+    name: converge
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+      pull-requests: read
+    env:
+      platform: 'staging'
+      domain: 'example.com'
+
+    steps:
+      - id: envs
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+        run: |
+          echo BRANCH_SLUG=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+        id: checkout
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - uses: bobheadxi/deployments@v1.5.0
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+        continue-on-error: true
+        id: git-deploy-start
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: ${{ env.BRANCH_SLUG }}
+          ref: ${{ github.head_ref }}
+
+      - run: echo DEPLOY STUB
+
+      - uses: bobheadxi/deployments@v1.5.0
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+        id: git-deploy-finish
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          env: ${{ env.platform }}
+          env_url: https://${{ env.BRANCH_SLUG }}.${{ env.domain }}
+          deployment_id: ${{ steps.git-deploy-start.outputs.deployment_id }}
+          desc: ${{ env.platform }}
