@@ -3,7 +3,7 @@ name: Preview
 on:
   pull_request:
     types: [opened, reopened, synchronize, labeled]
-    branches: [master]
+    branches: [main]
 
 concurrency:
   group: 'br-prev-${{ github.head_ref }}'
