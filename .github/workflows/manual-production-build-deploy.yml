@@ -26,6 +26,7 @@ jobs:
       - run: hostname
       - run: echo QUIT | nc localhost 6379
       - run: echo QUIT | nc $HOSTNAME 6379
+      - run: ifconfig eth0 |awk '/inet /{print $2}'|cut -d '/' -f1
 
       - name: Login to GitHub Container Registry
         id: docker-login
@@ -52,7 +53,7 @@ jobs:
           #secrets: ${{ toJSON(secrets) }}
           #file: env.secrets
 
-      - run: echo HOSTNAME=$HOSTNAME >> $GITHUB_ENV
+      - run: echo HOSTNAME=$(ifconfig eth0 |awk '/inet /{print $2}'|cut -d '/' -f1) >> $GITHUB_ENV
 
       - uses: werf/actions/converge@v1.2
         id: werf
