@@ -8,8 +8,11 @@ jobs:
   branch-dismiss:
     runs-on: ubuntu-latest
     if: ${{ (! contains(github.event.pull_request.labels.*.name, 'preview') ) || ( github.event.action == 'closed') }}
+    environment: 
+      name: preview
+      url: https://${{ env.BRANCH_SLUG }}.${{ env.domain }}
     permissions:
-      deployments: write
+      #deployments: write
       contents: read
     env:
       platform: 'staging'

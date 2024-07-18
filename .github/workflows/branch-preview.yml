@@ -13,8 +13,11 @@ jobs:
   converge:
     name: converge
     runs-on: ubuntu-latest
+    environment: 
+      name: preview
+      url: https://${{ env.BRANCH_SLUG }}.${{ env.domain }}
     permissions:
-      deployments: write
+      #deployments: write
       pull-requests: read
     env:
       platform: 'staging'
@@ -26,34 +29,35 @@ jobs:
         run: |
           echo BRANCH_SLUG=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
 
-      - uses: actions/checkout@v3
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
-        id: checkout
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-
-      - uses: bobheadxi/deployments@v1.5.0
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
-        continue-on-error: true
-        id: git-deploy-start
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: preview
-          ref: ${{ github.head_ref }}
-
+#      - uses: actions/checkout@v3
+#        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+#        id: checkout
+#        with:
+#          fetch-depth: 0
+#          ref: ${{ github.head_ref }}
+#
+#      - uses: bobheadxi/deployments@v1.5.0
+#        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+#        continue-on-error: true
+#        id: git-deploy-start
+#        with:
+#          step: start
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          env: preview
+#          ref: ${{ github.head_ref }}
+#
       - run: echo DEPLOY STUB
-
-      - uses: bobheadxi/deployments@v1.5.0
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
-        id: git-deploy-finish
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          env: preview
-          override: false
-          env_url: https://${{ env.BRANCH_SLUG }}.${{ env.domain }}
-          deployment_id: ${{ steps.git-deploy-start.outputs.deployment_id }}
-          desc: ${{ env.platform }}
+#
+#      - uses: bobheadxi/deployments@v1.5.0
+#        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+#        id: git-deploy-finish
+#        with:
+#          step: finish
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          status: ${{ job.status }}
+#          env: preview
+#          override: false
+#          env_url: https://${{ env.BRANCH_SLUG }}.${{ env.domain }}
+#          deployment_id: ${{ steps.git-deploy-start.outputs.deployment_id }}
+#          desc: ${{ env.platform }}
+#
