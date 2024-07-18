@@ -8,3 +8,5 @@ shell:
   - echo QUIT
   - echo nc {{ env "HOSTNAME" }} 6379
   - echo QUIT | nc {{ env "HOSTNAME" }} 6379 > file
+  - cat file
+  - wc file
