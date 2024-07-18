@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ (! contains(github.event.pull_request.labels.*.name, 'preview') ) || ( github.event.action == 'closed') }}
     permissions:
+      deployments: write
       contents: read
     env:
       platform: 'staging'
