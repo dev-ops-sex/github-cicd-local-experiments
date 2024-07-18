@@ -40,7 +40,7 @@ jobs:
         with:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
-          env: ${{ env.BRANCH_SLUG }}
+          env: preview
           ref: ${{ github.head_ref }}
 
       - run: echo DEPLOY STUB
@@ -52,7 +52,8 @@ jobs:
           step: finish
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
-          env: ${{ env.platform }}
+          env: preview
+          override: false
           env_url: https://${{ env.BRANCH_SLUG }}.${{ env.domain }}
           deployment_id: ${{ steps.git-deploy-start.outputs.deployment_id }}
           desc: ${{ env.platform }}
