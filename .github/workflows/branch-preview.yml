@@ -12,6 +12,7 @@ concurrency:
 jobs:
   converge:
     name: converge
+    if: contains(github.event.pull_request.labels.*.name, 'preview')
     runs-on: ubuntu-latest
     environment: 
       name: preview
@@ -25,7 +26,6 @@ jobs:
 
     steps:
       - id: envs
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
         run: |
           echo BRANCH_SLUG=pr-${{ github.event.pull_request.number }} >> $GITHUB_ENV
 
