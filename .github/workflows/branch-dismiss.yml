@@ -7,7 +7,7 @@ on:
 jobs:
   branch-dismiss:
     runs-on: ubuntu-latest
-    if: ${{ ( github.event.action == 'closed') || (! contains(github.event.pull_request.labels.*.name, 'preview') ) }}
+    if: ( github.event.action == 'closed') || ( github.event.label.name == 'preview')
     environment: 
       name: preview
       url: https://${{ env.BRANCH_SLUG }}.${{ env.domain }}
